@@ -20,7 +20,6 @@ class Bootstrap {
 
                 pluginDirectoryPath = path.join(pluginRootPath, pluginDirectory);
                 if (fs.statSync(pluginDirectoryPath).isDirectory()) {
-                    // TODO 这样能拿到吗
                     /** @type {{name : String, icon : String, comment : String, path : String}} */
                     let pluginConfig = require(path.join(pluginDirectoryPath, 'config.json'));
                     pluginConfig[pluginDirectory].path = path.join(pluginDirectoryPath, pluginConfig[pluginDirectory].path);
@@ -32,8 +31,36 @@ class Bootstrap {
 
         return Config;
     }
+
+    /**
+     * @static
+     * @public
+     * @param {...string} file
+     * @returns {string}
+     */
+    static assetsPath(...file) {
+        return path.join(__dirname, `../assets/${path.join(...file)}`);
+    }
+
+    /**
+     * @static
+     * @public
+     * @param {...string} file
+     * @returns {string}
+     */
+    static pluginsPath(...file) {
+        return path.join(__dirname, `../plugins/${path.join(...file)}`);
+    }
+
+    /**
+     * @static
+     * @public
+     * @param {...string} file
+     * @returns {string}
+     */
+    static windowsPath(...file) {
+        return path.join(__dirname, `../src/windows/${path.join(...file)}`);
+    }
 }
 
-module.exports = {
-    config : Bootstrap.generateConfig()
-};
+module.exports = Bootstrap;

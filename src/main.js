@@ -4,19 +4,24 @@
 const electron = require('electron');
 const CP       = require('child_process');
 const fs       = require('fs');
-const path     = require('path');
 
-const Config   = require('./bootstrap').config;
+const common = require('./common');
 
 class HotRunner {
 
     constructor() {
 
         /**
-         * @public
+         * @private
          * @type {electron.BrowserWindow}
          */
         this.mainWindows = null;
+
+        /**
+         * @private
+         * @type {Object}
+         */
+        this.config = common.generateConfig();
     }
 
     /**
@@ -38,6 +43,7 @@ class HotRunner {
         electron.app.on('ready', () => {
             this.mainWindows = this.createWindow();
             this.showWindow(this.mainWindows);
+            this.createTray();
         });
 
         electron.app.on('window-all-closed', () => {
@@ -60,12 +66,12 @@ class HotRunner {
                 let {plugin, args} = arg;
                 let exec;
 
-                if (plugin in Config.plugins) {
-                    exec = Config.plugins[plugin].path;
+                if (plugin in this.config.plugins) {
+                    exec = this.config.plugins[plugin].path;
                 }
 
                 if (!exec || !fs.existsSync(exec)) {
-                    exec = Config.plugins.app.path;
+                    exec = this.config.plugins.app.path;
                 }
 
                 CP.exec(`${exec} ${args}`, function(err, stdout, stderr) {
@@ -112,7 +118,7 @@ class HotRunner {
                     this.mainWindows.focus();
                 }
 
-                this.mainWindows.setContentSize(Config.width, Config.height, true);
+                this.mainWindows.setContentSize(this.config.width, this.config.height, true);
             }
         });
 
@@ -126,10 +132,10 @@ class HotRunner {
     createWindow() {
         // Create the browser window.
         const mainWindow = new electron.BrowserWindow({
-            width                   : Config.width,
-            height                  : Config.height,
+            width                   : this.config.width,
+            height                  : this.config.height,
             resizable               : false,
-            title                   : Config.title,
+            title                   : this.config.title,
             type                    : 'toolbar',
             frame                   : false,
             show                    : false,
@@ -137,28 +143,51 @@ class HotRunner {
             transparent             : true,
             alwaysOnTop             : false,
             disableAutoHideCursor   : true,
-            icon                    : path.join(__dirname, '../assets/HotRunner_128px.png')
+            icon                    : common.assetsPath('HotRunner_128px.png')
         });
 
         return mainWindow;
     }
 
     /**
-     *
+     * @private
      * @param {electron.BrowserWindow} mainWindow
      */
     showWindow(mainWindow) {
-        let bounds = mainWindow.getBounds();
-        let positionX = Config.position.x || bounds.x;
-        let positionY = Config.position.y || (bounds.y -150);
+        const bounds    = mainWindow.getBounds();
+        const positionX = this.config.position.x || bounds.x;
+        const positionY = this.config.position.y || (bounds.y -150);
+        const indexPage = common.windowsPath('views', 'index.html');
 
         mainWindow.setPosition(positionX, positionY, true);
-        // TODO 如果是跨平台的话，windows分隔符\\
-        mainWindow.loadURL(`file://${__dirname}/windows/views/index.html`);
+        mainWindow.loadURL(`file://${indexPage}`);
         mainWindow.show();
         mainWindow.focus();
 
         // mainWindow.webContents.openDevTools()
+    }
+
+    /**
+     * @private
+     */
+    createTray() {
+        let image = electron.nativeImage.createFromPath(common.assetsPath('HotRunner_48px.png'));
+        image.setTemplateImage(true);
+
+        const tray = new electron.Tray(image);
+        // tray.setToolTip('Tip');
+
+        const contextMenu = electron.Menu.buildFromTemplate([
+            {
+                label : 'Show',
+                click: () => console.log('Show Loading')
+            },
+            {
+                label: 'Exit',
+                click: () => electron.app.exit(0)
+            },
+        ]);
+        tray.setContextMenu(contextMenu);
     }
 
     closeWindow(mainWindows) {
