@@ -1,0 +1,8 @@
+.idea
+.*\.swp
+vendor
+\.swp
+composer\.lock
+node_modules
+package-lock.json
+dist

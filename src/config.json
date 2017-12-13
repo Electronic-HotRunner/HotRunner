@@ -1,0 +1,14 @@
+{
+    "title": "HotRunner",
+    "width": 700,
+    "height": 72,
+    "icon": "./assets/test.ico",
+    "debug": false,
+    "pluginPath": "../plugins",
+    "config": "config.json",
+    "position": {
+        "x": 0,
+        "y": 0
+    },
+    "plugins": {}
+}
