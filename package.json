@@ -7,14 +7,9 @@
   "scripts": {
     "start": "electron src/main.js --enable-transparent-visuals",
     "build": "./scripts/build-all.sh",
-    "build:osx": "./scripts/build.sh darwin x64",
-    "build:osx64": "./scripts/build.sh darwin x64",
     "build:linux32": "./scripts/build.sh linux ia32",
     "build:linux": "./scripts/build.sh linux x64",
-    "build:linux64": "./scripts/build.sh linux x64",
-    "build:win": ".\\scripts\\build-win32.bat win32 ia32",
-    "build:win32": ".\\scripts\\build-win32.bat win32 ia32",
-    "build:win64": ".\\scripts\\build-win32.bat win32 x64"
+    "build:linux64": "./scripts/build.sh linux x64"
   },
   "dependencies": {
     "electron": "1.4.14",
