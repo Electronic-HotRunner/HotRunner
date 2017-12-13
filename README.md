@@ -1,5 +1,7 @@
 # HotRunner
-Loading
+Pending
 
-## Dependencies
-- tree
+# How to use
+npm start
+
+# Pending...

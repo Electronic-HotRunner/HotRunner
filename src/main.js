@@ -32,6 +32,7 @@ class HotRunner {
             this.initApp();
             this.initIPC();
         } else {
+            console.error('HotRunner is already running');
             this.quit();
         }
     }
