@@ -185,13 +185,32 @@ body {
 .search-wrapper .result-container {
     width: 100%;
     position: absolute;
-    top:80px;
+    top:75px;
     left:0px;
     text-align: center;
     font-family: "Open Sans", Arial, Verdana;
     font-size: 14px;
-    display:none;
     color:#B7B7B7;
+}
+
+.search-wrapper .search-item {
+    overflow: hidden;
+    height: 70px;
+    background: rgba(255,255,255,0);
+    border-radius: 8px;
+    margin: 2px 0 0 0;
+    padding: 0;
+    width: 100%;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+.search-wrapper.active .search-item {
+    width:450px;
+    background: rgba(0,0,0,0.5);
+    -webkit-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -moz-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
 }
 
 

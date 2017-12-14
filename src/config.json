@@ -1,7 +1,7 @@
 {
     "title": "HotRunner",
-    "width": 700,
-    "height": 72,
+    "width": 1700,
+    "height": 900,
     "icon": "./assets/test.ico",
     "debug": false,
     "pluginPath": "../plugins",
