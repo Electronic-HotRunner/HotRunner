@@ -9,24 +9,24 @@
     <section class="container">
         <div class="search-wrapper active">
             <div class="input-holder">
-                <input class="search-input" placeholder="Type to search" />
+                <input id="search-bar" class="search-input" placeholder="Type to search" />
                 <button class="search-icon"><span></span></button>
             </div>
             <div class="result-container">
                 <div class="search-item">
-                    <img style="float:left;margin-left:10px;padding-top:5px;padding-left:5px;width:60px;" src="/soft/phpstorm/bin/phpstorm.png">
+                    <img src="/soft/phpstorm/bin/phpstorm.png">
                     <b><p>PHPSTORM</p></b>
                     <p>我是介绍</p>
                 </div>
 
                 <div class="search-item">
-                    <img style="float:left;margin-left:10px;padding-top:5px;padding-left:5px;width:60px;" src="http://www.jq22.com/tx/32.png">
+                    <img src="http://www.jq22.com/tx/32.png">
                     <b><p>我是标题</p></b>
                     <p>我是介绍</p>
                 </div>
 
                 <div class="search-item">
-                    <img style="float:left;margin-left:10px;padding-top:5px;padding-left:5px;width:60px;" src="http://www.jq22.com/tx/32.png">
+                    <img src="http://www.jq22.com/tx/32.png">
                     <b><p>我是标题</p></b>
                     <p>我是介绍</p>
                 </div>
@@ -37,14 +37,19 @@
 
 <script>window.$ = require('../static/js/jquery-1.11.0.min');</script>
 <script>
-//    const {Ipc} = require('../static/js/electron');
-//    Ipc.sendMessage('ipcDropList', {
-//        plugin  : 'app',
-//        args    : 'phpstorm'
-//    });
-//
-//    Ipc.getMessage('eventDropList', function(event, args) {
-//        alert(args);
-//    });
+    $(function() {
+        const {Ipc} = require('../static/js/electron');
+
+        $('#search-bar').bind('input propertychange', function() {
+            Ipc.sendMessage('ipcDropList', {
+                plugin  : 'app',
+                args    : 'phpstorm'
+            });
+        });
+
+        Ipc.getMessage('eventDropList', function(event, args) {
+            alert(args);
+        });
+    });
 </script>
 </html>
