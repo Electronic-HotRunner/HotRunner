@@ -41,15 +41,41 @@
         const {Ipc} = require('../static/js/electron');
 
         $('#search-bar').bind('input propertychange', function() {
+            const keyword = $.trim($('#search-bar').val());
+            if (!keyword) {
+                return;
+            }
+
             Ipc.sendMessage('ipcDropList', {
                 plugin  : 'app',
-                args    : 'phpstorm'
+                args    : keyword
             });
         });
 
-        Ipc.getMessage('eventDropList', function(event, args) {
-            alert(args);
+        Ipc.getMessage('eventDropList', function(event, selects) {
+            $('.result-container .search-item').remove();
+
+            let dropItem;
+            let resultContainer = [];
+
+            for (let select in selects) {
+                try {
+                    dropItem = JSON.parse(selects[select]);
+                    resultContainer.push(renderDropItem(dropItem.Name, dropItem.Comment, dropItem.Icon));
+                } catch (e) {
+                    console.log(e.message)
+                }
+            }
+
+            if (resultContainer.length > 0) {
+                $('.result-container').html(resultContainer.join());
+            }
         });
+
+        function renderDropItem(name, comment, icon, exec) {
+            return `<div class="search-item"><img src="${icon}"><b><p>${name}</p></b><p>${comment}</p></div>`;
+        }
+
     });
 </script>
 </html>
