@@ -3,7 +3,7 @@
         "name":"翻译",
         "icon":"./translate.png",
         "comment":"translate " ,
-        "path":"./translate.php"
+        "path":"./translate.js"
     }
 }
 

@@ -71,7 +71,7 @@ class HotRunner {
                     exec = this.config.plugins[plugin].path;
                 }
 
-                if (!exec || !fs.existsSync(exec)) {
+                if (!exec) {
                     exec = this.config.plugins.app.path;
                 }
 
@@ -165,7 +165,7 @@ class HotRunner {
         mainWindow.show();
         mainWindow.focus();
 
-        mainWindow.webContents.openDevTools()
+        // mainWindow.webContents.openDevTools()
     }
 
     /**
