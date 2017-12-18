@@ -193,6 +193,19 @@ body {
     color:#B7B7B7;
 }
 
+.result-container .box-translate {
+    overflow: hidden;
+    height: 70px;
+    border-radius: 8px;
+    margin: 2px 0 0 0;
+    padding: 0;
+    width:450px;
+    background: rgba(0,0,0,0.5);
+    -webkit-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -moz-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+}
+
 .search-wrapper .search-item {
     overflow: hidden;
     height: 70px;
