@@ -1,0 +1,93 @@
+.search-wrapper .result-container {
+    width: 100%;
+    position: absolute;
+    top:75px;
+    left:0px;
+    font-family: "Open Sans", Arial, Verdana;
+    font-size: 14px;
+    color:#ccc;
+}
+
+/*翻译结果样式*/
+
+.result-container .box-translate {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 200px;
+    border-radius: 8px;
+    margin: 2px 0 0 0;
+    padding: 16px;
+    width:450px;
+    background: rgba(0,0,0,0.8);
+    -webkit-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    -moz-transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+    transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+}
+
+.translate-box {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    //background-color: rgba(255, 255, 255, .8);
+}
+.translate-text {
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #f40;
+}
+.translate-pronunciation {
+    display: flex;
+    justify-content: flex-start;
+}
+.p-item {
+    margin-right: 12px;
+}
+.p-type {
+    font-weight: 600;
+}
+.translate-result-list {
+    margin: 12px 0;
+    color: #EEB422;
+}
+.translate-result-item {
+    margin: 8px 0;
+}
+.result-type {
+    display: inline-block;
+    width: 30px;
+}
+.translate-tag-list {
+    margin: 12px 0;
+}
+.about-content-item {
+    color: #87CEFA;
+    margin-right: 12px;
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+.about-content-value {
+    text-decoration: underline;
+}
+.translate-tag-item {
+    margin-right: 8px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    font-size: 12px;
+}
+
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.col {
+    display: flex;
+    flex-direction: column;
+}

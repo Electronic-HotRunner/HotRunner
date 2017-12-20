@@ -1,0 +1,46 @@
+
+<template id="translate-template">
+    <div class="box-translate">
+        <div class="translate-box">
+            <!-- 翻译的内容 -->
+            <div class="translate-text">
+                ${tranlateContent}
+            </div>
+            <!-- 读音 -->
+            <div class="translate-pronunciation">
+                {{each(i, item) pronunciation}}
+                <div class="p-item">
+                    <span class="p-type">${item.key}</span>
+                    <span class="p-value">[${item.value}]</span>
+                </div>
+                {{/each}}
+            </div>
+            <!-- 意思 -->
+            <div class="translate-result-list">
+                {{each(i, item) tranlateResult}}
+                <div class="translate-result-item">
+                    <span class="result-type">${item.part}</span>
+                    <span class="result-value">${item.meanStr}</span>
+                </div>
+                {{/each}}
+            </div>
+            <!-- 关于其他 -->
+            <div class="about-content-list row">
+                {{each(i, item) abouts}}
+                <div class="about-content-item">
+                    <span class="about-content-label">${item.key}：</span>
+                    <span class="about-content-value">${item.value}</span>
+                </div>
+                {{/each}}
+            </div>
+            <!-- 标签 -->
+            <div class="translate-tag-list row">
+                {{each(i, tag) tags}}
+                <div class="translate-tag-item">
+                    ${tag}
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</template>
