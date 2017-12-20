@@ -82,15 +82,8 @@ class HotRunner {
                         return;
                     }
 
-                    let dropItems = stdout.toString().split("\n");
-                    let dropList = {};
-                    for (let idx = 0; idx < dropItems.length; idx++) {
-                        try {
-                            dropList[JSON.stringify(JSON.parse(dropItems[idx]))] = 1;
-                        } catch(e) {
-                        }
-                    }
-                    event.sender.send('eventDropList', Object.keys(dropList));
+                    // TODO 这里要分模块
+                    event.sender.send(`${plugin}EventDropList`, stdout);
                 });
             } catch(e) {
             }

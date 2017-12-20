@@ -19,9 +19,7 @@
         </div>
     </section>
 
-
     <iframe id="template-iframe" width="0" height="0" src="./template/template.html"></iframe>
-
 </body>
 
 <script>
@@ -30,59 +28,9 @@
 <script type="text/javascript" src="../static/js/jquery.tmpl.min.js"></script>
 <script src="../static/js/render-html.js" type="text/javascript"></script>
 <script>
-
-    
-    // const data = {
-    //   "tranlateContent" : "系统",
-    //   pronunciation: [
-    //     {
-    //         key: 'uk',
-    //         value: 'ˈsɪstəm'
-    //     },
-    //     {
-    //         key: 'ua',
-    //         value: 'ˈsɪstəm'
-    //     }
-    // ],
-    // abouts: [
-    //     {
-    //         key: '第三人称单数',
-    //         value: 'delays'
-    //     },
-    //     {
-    //         key: '第三人称单数',
-    //         value: 'delays'
-    //     },
-    //     {
-    //         key: '第三人称单数',
-    //         value: 'delays'
-    //     },
-    //     {
-    //         key: '第三人称单数',
-    //         value: 'delays'
-    //     },
-    // ],
-    //   "tranlateResult" : [
-    //     {
-    //     "part": "n.",
-    //     "means": ["制度", "体系，系统",  "身体","方法"],
-    //     "meanStr": "制度；体系，系统；身体；方法"
-    //     },
-    //     {
-    //     "part": "v.",
-    //     "means": ["制度", "体系，系统",  "身体","方法"],
-    //     "meanStr": "制度；体系，系统；身体；方法"
-    //     }
-    //   ],
-    //   "tags" : [ "高考", "考研","TOEFL"]
-    // }
-
-    // 渲染翻译内容， 调用如下， 数据结构如上，在你需要调用他的时候调用他。
-    RenderUtils.translateHtml(data);
-
-
     $(function() {
         const {Ipc} = require('../static/js/electron');
+
         $('#search-bar').bind('input propertychange', function() {
             const keyword = $.trim($('#search-bar').val());
             if (!keyword) {
@@ -93,25 +41,20 @@
                 args    : keyword
             });
         });
-        Ipc.getMessage('eventDropList', function(event, selects) {
-            $('.result-container .search-item').remove();
-            let dropItem;
-            let resultContainer = [];
-            for (let select in selects) {
-                try {
-                    dropItem = JSON.parse(selects[select]);
-                    resultContainer.push(renderDropItem(dropItem.Name, dropItem.Comment, dropItem.Icon));
-                } catch (e) {
-                    console.log(e.message)
-                }
+
+        Ipc.getMessage('translateEventDropList', function(event, body) {
+            let translate;
+            try {
+                translate = JSON.parse(body);
+                 RenderUtils.emptyHtml();
+            } catch (e) {
+                // TODO 缺少完整的日志输出
+                console.log(e);
             }
-            if (resultContainer.length > 0) {
-                $('.result-container').html(resultContainer.join());
-            }
+
+            console.log(translate);
+            RenderUtils.translateHtml(translate);
         });
-        function renderDropItem(name, comment, icon, exec) {
-            return `<div class="search-item"><img src="${icon}"><b><p>${name}</p></b><p>${comment}</p></div>`;
-        }
     });
 </script>
 </html>

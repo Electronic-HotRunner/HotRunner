@@ -6,17 +6,17 @@ const maxDelayTime = 5;
 const cache = {};
 
 const RenderUtils = {
+
     /**
      * 延迟渲染函数，解决在执行函数时，iframe中的模板html还未加载完毕的情况
      * @param  {String}   selector 模板选择器
      * @param  {Function} cb       回调函数，接收一个参数是模板的Dom元素jquery对象
      */
-    delayRender: function (selector, cb) {
+    delayRender : function (selector, cb) {
         if (typeof cb !== 'function' || typeof selector !== 'string') {
             return;
         }
         const $dom = $doc.find(selector);
-        console.log($dom)
         if (!$dom.length) {
 
             let val = $.data(cache, selector) || 0;
@@ -36,12 +36,17 @@ const RenderUtils = {
             $.removeData(cache, selector);
         }
     },
-    translateHtml: function (data) {
+
+    translateHtml : function (data) {
         const selector = '#translate-template';
         this.delayRender(selector, ($dom) => {
             $dom.tmpl(data).appendTo($container);
         });
+    },
+
+    emptyHtml : function () {
+        $container.empty();
     }
-}
+};
 
 module.exports = RenderUtils;

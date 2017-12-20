@@ -47,7 +47,54 @@ class Translator {
 
         const url = this.buildUrl(this.api, this.options);
 
-        return this.request(url);
+        return this.request(url).then((body) => {
+            return this.format(body);
+        });
+    }
+
+    /**
+     * 格式化结果
+     *
+     * @param {object} body
+     */
+    format(body) {
+        const result = {};
+        const simpleMeans = body.dict_result.simple_means;
+
+        // 翻译内容
+        result.translateContent = simpleMeans.word_name;
+        // 发音
+        result.pronunciation = [
+            {key : 'en', value : simpleMeans.symbols[0].ph_en},
+            {key : 'am', value : simpleMeans.symbols[0].ph_am}
+        ];
+
+        let exchange;
+        result.exchange = [];
+        const mappings = {
+            word_pl     : '复数',
+            word_ing    : '现在分词',
+            word_done   : '过去式',
+            word_past   : '过去分词',
+            word_third  : '第三人称单数'
+        };
+
+        for (let mapping in mappings) {
+            exchange = this.buildExchange(mappings[mapping], simpleMeans.exchange[mapping]);
+            exchange && result.exchange.push(exchange);
+        }
+
+        result.parts = simpleMeans.symbols[0].parts.map(function(part) {
+            part['meanStr'] = part['means'].join('；');
+            return part;
+        });
+
+        result.tags = [];
+        for (let idx in simpleMeans.tags) {
+            result.tags = result.tags.concat(simpleMeans.tags[idx]);
+        }
+
+        return result;
     }
 
     /**
@@ -58,6 +105,19 @@ class Translator {
      */
     buildUrl(url, options) {
         return url + '?' + querystring.stringify(options);
+    }
+
+    /**
+     * @param {string} mapping
+     * @param {*} exchange
+     * @returns {*}
+     */
+    buildExchange(mapping, exchange) {
+        if (!exchange || (exchange instanceof Array && exchange.length === 0)) {
+            return false;
+        }
+
+        return {key : mapping, value : exchange.join(';')}
     }
 
     request(url) {
@@ -103,12 +163,7 @@ Translator.LANG_ZH = 'zh';
 
 const translator = new Translator(process.argv[2]);
 translator.translate().then(function(body) {
-    const result = {};
-
-    result.symbols = body.dict_result.simple_means.symbols;
-    result.tags    = body.dict_result.simple_means.tags;
-
-    process.stdout.write(JSON.stringify(result));
+    process.stdout.write(JSON.stringify(body));
 }).catch(function(e) {
     console.log(e.message)
 });

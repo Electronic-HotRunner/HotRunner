@@ -4,7 +4,7 @@
         <div class="translate-box">
             <!-- 翻译的内容 -->
             <div class="translate-text">
-                ${tranlateContent}
+                ${translateContent}
             </div>
             <!-- 读音 -->
             <div class="translate-pronunciation">
@@ -17,7 +17,7 @@
             </div>
             <!-- 意思 -->
             <div class="translate-result-list">
-                {{each(i, item) tranlateResult}}
+                {{each(i, item) parts}}
                 <div class="translate-result-item">
                     <span class="result-type">${item.part}</span>
                     <span class="result-value">${item.meanStr}</span>
@@ -26,7 +26,7 @@
             </div>
             <!-- 关于其他 -->
             <div class="about-content-list row">
-                {{each(i, item) abouts}}
+                {{each(i, item) exchange}}
                 <div class="about-content-item">
                     <span class="about-content-label">${item.key}：</span>
                     <span class="about-content-value">${item.value}</span>
