@@ -39,9 +39,10 @@
             }
             Ipc.sendMessage('ipcDropList', {
                 plugin  : 'translate',
-                args    : keyword
+                args    : encodeURI(keyword)
             });
         });
+        $searchBar.focus();
 
         $("body").keyup(function(e) {
             if (e.keyCode === 27) {

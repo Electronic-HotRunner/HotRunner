@@ -21,14 +21,14 @@ class Translator {
          * @private
          * @type {string}
          */
-        this.query = query;
+        this.query = decodeURI(query);
 
         /**
          * @private
          * @type {{query: string, simple_means_flag: number, transtype: string, from: string, to: string}}
          */
         this.options = {
-            query             : query,
+            query             : this.query,
             simple_means_flag : 3,
             transtype         : 'translang',
             from              : Translator.LANG_ZH,
@@ -122,13 +122,21 @@ class Translator {
     formatZhToEn(body) {
         const result = {};
         const simpleMeans = body.dict_result.simple_means;
-
-        if (!simpleMeans) {
-            return false
-        }
+        const transResult = body.trans_result;
 
         // 翻译内容
-        result.translateContent = simpleMeans.word_name;
+        if (simpleMeans) {
+            result.translateContent = simpleMeans.word_name;
+        } else if (!simpleMeans && transResult) {
+            result.translateContent = transResult.data[0].dst;
+            return result;
+        }
+
+        if (!simpleMeans) {
+            return false;
+        }
+
+
         // 发音
         result.pronunciation = [
             {key : '拼音', value : simpleMeans.symbols[0].word_symbol}

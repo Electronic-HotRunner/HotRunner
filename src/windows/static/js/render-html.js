@@ -1,7 +1,7 @@
 
 const $container = $('.result-container');
 
-const timeout = 50;
+const timeout = 200;
 const maxDelayTime = 5;
 const cache = {};
 

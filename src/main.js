@@ -162,7 +162,7 @@ class HotRunner {
         mainWindow.show();
         mainWindow.focus();
 
-        mainWindow.webContents.openDevTools()
+        // mainWindow.webContents.openDevTools()
     }
 
     /**
