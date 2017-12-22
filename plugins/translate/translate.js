@@ -40,26 +40,41 @@ class Translator {
      * @public
      */
     translate() {
-        const translateType = this.getTranslateType(this.query);
+        const lang = this.getLang(this.query);
+        const translateType = lang ?
+            {from : Translator.LANG_ZH, to : Translator.LANG_EN} :
+            {from : Translator.LANG_EN, to : Translator.LANG_ZH};
 
         this.option(translateType);
         this.option('query', encodeURI(this.query));
 
         const url = this.buildUrl(this.api, this.options);
-
         return this.request(url).then((body) => {
-            return this.format(body);
+            let translateResult;
+
+            if (lang === Translator.LANG_EN) {
+                translateResult = this.formatEnToZh(body);
+            } else if (lang === Translator.LANG_ZH) {
+                translateResult = this.formatZhToEn(body);
+            }
+
+            return translateResult;
         });
     }
 
     /**
-     * 格式化结果
+     * 英译汉
      *
      * @param {object} body
+     * @return {Boolean|Object}
      */
-    format(body) {
+    formatEnToZh(body) {
         const result = {};
         const simpleMeans = body.dict_result.simple_means;
+
+        if (!simpleMeans) {
+            return false;
+        }
 
         // 翻译内容
         result.translateContent = simpleMeans.word_name;
@@ -80,12 +95,51 @@ class Translator {
         };
 
         for (let mapping in mappings) {
-            exchange = this.buildExchange(mappings[mapping], simpleMeans.exchange[mapping]);
+            exchange = this.buildExchange(mappings[mapping], !_.isEmpty(simpleMeans.exchange) ? simpleMeans.exchange[mapping] : null);
             exchange && result.exchange.push(exchange);
         }
 
         result.parts = simpleMeans.symbols[0].parts.map(function(part) {
             part['meanStr'] = part['means'].join('；');
+            return part;
+        });
+
+        result.tags = [];
+        for (let idx in simpleMeans.tags) {
+            result.tags = result.tags.concat(simpleMeans.tags[idx]);
+        }
+        result.tags = result.tags.filter(tag => !!tag);
+
+        return result;
+    }
+
+    /**
+     * 汉译英
+     *
+     * @param {object} body
+     * @return {Boolean|Object}
+     */
+    formatZhToEn(body) {
+        const result = {};
+        const simpleMeans = body.dict_result.simple_means;
+
+        if (!simpleMeans) {
+            return false
+        }
+
+        // 翻译内容
+        result.translateContent = simpleMeans.word_name;
+        // 发音
+        result.pronunciation = [
+            {key : '拼音', value : simpleMeans.symbols[0].word_symbol}
+        ];
+
+        result.exchange = [];
+
+        result.parts = simpleMeans.symbols[0].parts.map(function(part) {
+            part['meanStr'] = part['means'].map(function(m) {
+                return m.text;
+            }).join('；');
             return part;
         });
 
@@ -137,12 +191,10 @@ class Translator {
      *
      * @private
      * @param {string} query
-     * @returns {{from : string, to : string}}
+     * @returns {String}
      */
-    getTranslateType(query) {
-        return /[^\x00-\xff]/.test(query) ?
-            {from : Translator.LANG_ZH, to : Translator.LANG_EN} :
-            {from : Translator.LANG_EN, to : Translator.LANG_ZH};
+    getLang(query) {
+        return /[^\x00-\xff]/.test(query) ? Translator.LANG_ZH : Translator.LANG_EN;
     }
 
     /**
@@ -163,7 +215,7 @@ Translator.LANG_ZH = 'zh';
 
 const translator = new Translator(process.argv[2]);
 translator.translate().then(function(body) {
-    process.stdout.write(JSON.stringify(body));
+    process.stdout.write(JSON.stringify(body ? body : {}));
 }).catch(function(e) {
-    console.log(e.message)
+    console.log(e)
 });

@@ -26,12 +26,12 @@
     window.jQuery = window.$ = require('../static/js/jquery-1.11.0.min');
 </script>
 <script type="text/javascript" src="../static/js/jquery.tmpl.min.js"></script>
-<script src="../static/js/render-html.js" type="text/javascript"></script>
 <script>
     $(function() {
-        const {Ipc} = require('../static/js/electron');
+        const {Ipc}       = require('../static/js/electron');
+        const RenderUtils = require('../static/js/render-html.js');
 
-        const $searchBar = $('#search-bar');
+        const $searchBar  = $('#search-bar');
         $searchBar.bind('input propertychange', function() {
             const keyword = $.trim($('#search-bar').val());
             if (!keyword) {

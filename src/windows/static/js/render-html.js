@@ -1,7 +1,7 @@
 
 const $container = $('.result-container');
 const $doc = $($('#template-iframe')[0].contentWindow.document);
-const timeout = 50;
+const timeout = 100;
 const maxDelayTime = 5;
 const cache = {};
 
