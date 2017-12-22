@@ -31,9 +31,9 @@
         const {Ipc}       = require('../static/js/electron');
         const RenderUtils = require('../static/js/render-html.js');
 
-        const $searchBar  = $('#search-bar');
+        const $searchBar = $('#search-bar');
         $searchBar.bind('input propertychange', function() {
-            const keyword = $.trim($('#search-bar').val());
+            const keyword = $.trim($searchBar.val());
             if (!keyword) {
                 RenderUtils.emptyHtml();
                 return;
@@ -63,7 +63,7 @@
             try {
                 translate = JSON.parse(body);
                 RenderUtils.emptyHtml();
-                if ($.trim($('#search-bar').val())) {
+                if ($.trim($searchBar.val())) {
                     RenderUtils.translateHtml(translate);
                 }
             } catch (e) {
