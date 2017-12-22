@@ -14,9 +14,9 @@ function Ipc() {
  * @public
  * @memberOf Ipc
  * @param {string} channel
- * @param {{plugin : string, args : string}} args
+ * @param {{plugin : string, args : string}|null} args
  */
-Ipc.sendMessage = function(channel, args) {
+Ipc.sendMessage = function(channel, args = null) {
     ipcRenderer.send(channel, args);
 };
 
