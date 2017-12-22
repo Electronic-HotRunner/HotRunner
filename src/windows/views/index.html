@@ -35,6 +35,7 @@
         $searchBar.bind('input propertychange', function() {
             const keyword = $.trim($('#search-bar').val());
             if (!keyword) {
+                RenderUtils.emptyHtml();
                 return;
             }
             Ipc.sendMessage('ipcDropList', {
@@ -62,12 +63,13 @@
             try {
                 translate = JSON.parse(body);
                 RenderUtils.emptyHtml();
+                if ($.trim($('#search-bar').val())) {
+                    RenderUtils.translateHtml(translate);
+                }
             } catch (e) {
                 // TODO 缺少完整的日志输出
                 console.log(e);
             }
-
-            RenderUtils.translateHtml(translate);
         });
     });
 </script>
