@@ -27,7 +27,7 @@ fi
 
 ignore_list="dist|scripts|\.idea|.*\.md|.*\.yml|node_modules/nodejieba"
 
-electron-packager . "${APP_NAME}" --platform=${PLATFORM} --arch=${ARCH} --electronVersion=1.4.15 --app-version=1.4.0 --asar --icon=assets/HotRunner.png --overwrite --out=./dist --ignore=${ignore_list}
+electron-packager . "${APP_NAME}" --platform=${PLATFORM} --arch=${ARCH} --electronVersion=1.4.14 --app-version=1.4.0 --asar --icon=assets/HotRunner.png --overwrite --out=./dist --ignore=${ignore_list} --enable-transparent-visuals
 
 if [ $? -eq 0 ]; then
   echo -e "$(tput setaf 2)Packaging for $PLATFORM $ARCH succeeded.$(tput sgr0)\n"
