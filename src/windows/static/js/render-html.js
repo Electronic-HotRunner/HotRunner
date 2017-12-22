@@ -1,7 +1,7 @@
 
 const $container = $('.result-container');
-const $doc = $($('#template-iframe')[0].contentWindow.document);
-const timeout = 100;
+
+const timeout = 50;
 const maxDelayTime = 5;
 const cache = {};
 
@@ -16,7 +16,9 @@ const RenderUtils = {
         if (typeof cb !== 'function' || typeof selector !== 'string') {
             return;
         }
+        const $doc = $($('#template-iframe')[0].contentWindow.document);
         const $dom = $doc.find(selector);
+        
         if (!$dom.length) {
 
             let val = $.data(cache, selector) || 0;
