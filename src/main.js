@@ -75,7 +75,7 @@ class HotRunner {
                     exec = this.config.plugins.app.path;
                 }
 
-                CP.exec(`${exec} ${args}`, function(err, stdout, stderr) {
+                CP.exec(`${exec} ${args}`, (err, stdout, stderr) => {
                     if (err) {
                         // TODO
                         console.log(err);
@@ -89,7 +89,7 @@ class HotRunner {
             }
         });
 
-        electron.ipcMain.on('ipcMainExec', function(event, arg) {
+        electron.ipcMain.on('ipcMainExec', (event, arg) => {
             if (!arg.length) {
                 return;
             }
@@ -101,6 +101,10 @@ class HotRunner {
             }
 
             // TODO close window
+        });
+
+        electron.ipcMain.on('hide', (event, arg) => {
+            this.hide();
         });
     }
 
@@ -184,8 +188,8 @@ class HotRunner {
         tray.setContextMenu(contextMenu);
     }
 
-    closeWindow(mainWindows) {
-        mainWindows.hide();
+    hide() {
+        this.mainWindows.hide();
     }
 
     quit() {

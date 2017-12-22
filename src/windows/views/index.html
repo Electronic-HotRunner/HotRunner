@@ -31,7 +31,8 @@
     $(function() {
         const {Ipc} = require('../static/js/electron');
 
-        $('#search-bar').bind('input propertychange', function() {
+        const $searchBar = $('#search-bar');
+        $searchBar.bind('input propertychange', function() {
             const keyword = $.trim($('#search-bar').val());
             if (!keyword) {
                 return;
@@ -42,11 +43,24 @@
             });
         });
 
+        $("body").keyup(function(e) {
+            if (e.keyCode === 27) {
+                // 首先清空，再退出
+                if ($.trim($searchBar.val()).length === 0) {
+                    RenderUtils.emptyHtml();
+                    Ipc.sendMessage('hide');
+                } else {
+                    $searchBar.val('');
+                    RenderUtils.emptyHtml();
+                }
+            }
+        });
+
         Ipc.getMessage('translateEventDropList', function(event, body) {
             let translate;
             try {
                 translate = JSON.parse(body);
-                 RenderUtils.emptyHtml();
+                RenderUtils.emptyHtml();
             } catch (e) {
                 // TODO 缺少完整的日志输出
                 console.log(e);
